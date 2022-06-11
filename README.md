@@ -14,6 +14,6 @@ Foi utilizada a biblioteca ter tensorflow e API Keras da linguagem de programaç
 
 <h2 align="center"><strong>Links úteis :</strong></h2>
 
-Teoria📝: 
+Vídeo/Teoria🎥📝: https://youtu.be/Goos3eOvYbw
 
-Vídeo/🎥: 
+Drive com todos os documentos pedidos(artigo latex, página html): https://drive.google.com/drive/folders/1FHGbnfl6vi23NlXKrYapi1SyOUDd2rm7?usp=sharing
