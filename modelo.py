@@ -1,73 +1,39 @@
-from urllib import response
-import numpy as np
-import os
-import cv2
 from tensorflow import keras
-from PIL import Image
 import requests
-import random
 
-
-class Model: 
-    def load_model(self):
+class Modelo: 
+    def carrega_modelo(self):
         model = keras.models.load_model('PokeModel.h5')
-        model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+        model.compile(loss='categorical_crossentropy', optimizer='adam')
         return model
 
-    def predict(self, model, url):
+    def previsao(self, url_img):
         data = []
-        url = url
-        filename = url.split("/")[-1]
+        url_img = url_img
+        nome_arq = url_img.split("/")[-1]
         
-        if not self.is_valid_format(filename):
-            supported_formats = 'Formatos suportados: jpg, jpeg, png, etc.'
-            return f"{random.choice(self.rude_responses)} `" + supported_formats + "`"
+        if not self.validando_formato(nome_arq):
+            tipo_arq = 'Tipos de imagens: , png, jpge, jpg'
+            return f"{self.erro_img} `" + tipo_arq + "`"
 
-        self.save_image(url, filename)
+        self.salvando_img(url_img, nome_arq)
 
         try: 
-            data.append(self.prepare_image(filename))
+            data.append(self.prep_img(nome_arq))
         except:
-            print("Error preparing image")
-
-        result, percentage = self.test_image(data, model)
-        response = f"{self.random_response()} `" + self.classes[result[0]] + " | certeza: " +  str(np.round(percentage, 2)) + "%"+ "`"
-        return response
-         
-    def save_image(self, url, filename):
-        img_data = requests.get(url).content
-        with open(filename, 'wb') as handler:
-            handler.write(img_data)
-
-    def prepare_image(self, filename):
-        image = cv2.imread(filename)
-        image_fromarray = Image.fromarray(image, 'RGB')
-        resize_image = image_fromarray.resize((30, 30))
-        os.remove(filename)
-        return np.array(resize_image)
+            print("Erro ao preparar imagem")
     
-    def test_image(self, data, model):
-        test = np.array(data) / 255
-
-        pred = model.predict(test)
-        classes_x=np.argmax(pred,axis=1)
-        return classes_x, np.amax(pred) * 100
-
-    def is_valid_format(self, filename): 
-        format = filename.split(".")[-1]
-        return format == "jpg" or format == 'png' or format == "jpeg"
     
- 
-    
-    rude_responses = [
-        'Parece que alguém comprou a carteira.',
-        'Manda a mãe para ver se classifica.',
-        'Leio, não nego. Classifico se eu quiser..',
-        'Você não vai me pegar tão fácil.',
-        'Que feio, mandando imagem nada a ver para tirar nota de aluno'
-    ]
+    def validando_formato(self, nome_arq): 
+        formato = nome_arq.split(".")[-1]
+        return formato=="png" or formato=="jpeg" or formato=="jpg"
 
-   
+
+    def salvando_img(self, url_img, nome_arq):
+        img_data = requests.get(url_img).content
+        with open(nome_arq, 'wb') as img_mp:
+            img_mp.write(img_data) 
+
 
     classes = { 0:'Abra',
     1:'Aerodactyl',
@@ -218,6 +184,6 @@ class Model:
     146:'Weezing',
     147:'Wigglytuff',
     148:'Zapdos',
-    149:'Zubat',
+    149:'Zubat'}   
 
-            }   
+    erro_img = ['Tipo de imagem não suportado.']

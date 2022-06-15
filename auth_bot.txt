@@ -1,0 +1,4 @@
+link para colocar o bot no server:
+
+
+https://discord.com/api/oauth2/authorize?client_id=984887120005062746&permissions=8&scope=bot
